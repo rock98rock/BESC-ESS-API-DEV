@@ -7,6 +7,7 @@ setup(
     license='MIT License',
     description='Send data to the ESS API',
     long_description=open('README.txt').read(),
+    download_url='https://github.com/rock98rock/BESC-ESS-API-DEV/archive/0.1dev.tar.gz',
     install_requires=['query_string'],
     author='Clive Lim'
 )
