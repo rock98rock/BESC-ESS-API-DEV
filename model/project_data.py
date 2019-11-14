@@ -3,7 +3,7 @@ from .device import *
 import hashlib
 import datetime
 import json
-
+from collections import OrderedDict
 
 class ProjectData:
     """
@@ -36,7 +36,8 @@ class ProjectData:
     @returns {ProjectData}
     """
 
-    def createWithCurrenTime(self, project_name, devices, totalEnergyUsage, averageRT, geolocation):
+    @staticmethod
+    def createWithCurrenTime(project_name, devices, totalEnergyUsage, averageRT, geolocation):
 
         currentDateTime = datetime.datetime.now()
 
@@ -56,23 +57,34 @@ class ProjectData:
         validate.string(self.project, "Project")
         validate.datetimestring(self.datetime, "DateTime")
 
+
+    def serializedDevice(self):
+        serialized_Device = []
+
+        for x in range(len(self.devices)):
+            serialized_Device.append(self.devices[x].serialize())
+
+        return serialized_Device
+
+
     def serialize(self):
-        dataToSend = {
-            "Project": self.project,
-            "DateTime": self.datetime,
-            "Devices": self.totalEnergyUsage,
-            "AverageRT": self.averageRT,
-            "Geolocation": self.geolocation
-        }
+        dataToSend = json.dumps(OrderedDict([("Project", self.project),
+                                             ("DateTime", self.datetime),
+                                             ("Devices", self.serializedDevice()),
+                                             ("TotalEnergyUsage", self.totalEnergyUsage),
+                                             ("AverageRT", self.averageRT),
+                                             ("Geolocation", self.geolocation)]),
+                                separators=(',', ':'))
 
-        hash = hashlib.sha1()
-        hash.update(json.dumps(dataToSend).encode("utf-8"))
+        hash = hashlib.sha1((dataToSend).encode("utf-8")).hexdigest()
+        print(hash)
 
-        serialized ={
-            "data": dataToSend,
-            "checksum": hash.hexdigest()
-        }
+        serialized = OrderedDict([
+            ("data", dataToSend),
+            ("checksum", hash)
+        ])
 
+        print(serialized)
         return serialized
 
 
