@@ -6,7 +6,7 @@ from model.keypair import KeyPair
 import urllib3
 import asyncio
 
-kp = KeyPair("Testing", "abc123")
+kp = KeyPair("Test", "abc123")
 host_client = besc_host.besc_ess_host.createDefault(besc_host.besc_ess_host)
 
 
