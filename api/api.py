@@ -21,10 +21,6 @@ async def getProjectData(client, keyPair, queryOptions):
     client.setprojectid(keyPair.projectId)
     client.setendpoint("/project/:project_id")
 
-    #queryString = urllib.parse.urlencode(queryOptions)
-
-    #print(queryString)
-    #print(client.buildUrl() + (queryString if "?" + queryString else ""))
     try:
         response = requests.get(client.buildUrl(),
                             headers={
@@ -45,14 +41,14 @@ async def sendProjectData(client, keyPair, projectdata):
     client.setendpoint("/project/:project_id")
     serializedData = projectdata.serialize()
     json_str = json.dumps(serializedData)
+
     data = json.loads(json_str)
 
-    #print(client.buildUrl())
     response = requests.post(client.buildUrl(),
-                             json=data,
+                             data=data['data'],
                              headers={
                                  "apikey": keyPair.apiKey,
-                                 "Content-Type": "application.json",
+                                 "Content-Type": "application/json",
                                  "checksum": data['checksum']
                              })
 
