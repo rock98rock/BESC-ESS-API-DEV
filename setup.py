@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='besc-ess-api',
-    version='0.1dev',
+    version='1.0',
     packages=find_packages(),
     license='MIT License',
     description='Send data to the ESS API',
